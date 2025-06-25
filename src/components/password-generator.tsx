@@ -47,23 +47,25 @@ export function PasswordGenerator() {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
 
+  const { length, uppercase, lowercase, numbers, symbols } = options;
+
   const generatePassword = useCallback(() => {
     let charPool = "";
     const guaranteedChars: string[] = [];
 
-    if (options.lowercase) {
+    if (lowercase) {
       charPool += LOWERCASE_CHARS;
       guaranteedChars.push(LOWERCASE_CHARS[Math.floor(Math.random() * LOWERCASE_CHARS.length)]);
     }
-    if (options.uppercase) {
+    if (uppercase) {
       charPool += UPPERCASE_CHARS;
       guaranteedChars.push(UPPERCASE_CHARS[Math.floor(Math.random() * UPPERCASE_CHARS.length)]);
     }
-    if (options.numbers) {
+    if (numbers) {
       charPool += NUMBER_CHARS;
       guaranteedChars.push(NUMBER_CHARS[Math.floor(Math.random() * NUMBER_CHARS.length)]);
     }
-    if (options.symbols) {
+    if (symbols) {
       charPool += SYMBOL_CHARS;
       guaranteedChars.push(SYMBOL_CHARS[Math.floor(Math.random() * SYMBOL_CHARS.length)]);
     }
@@ -73,7 +75,7 @@ export function PasswordGenerator() {
       return;
     }
 
-    const remainingLength = options.length - guaranteedChars.length;
+    const remainingLength = length - guaranteedChars.length;
     let randomChars = "";
     for (let i = 0; i < remainingLength; i++) {
       randomChars += charPool[Math.floor(Math.random() * charPool.length)];
@@ -86,7 +88,7 @@ export function PasswordGenerator() {
 
     setPassword(shuffledPassword);
     setSuggestionResult(null);
-  }, [options]);
+  }, [length, uppercase, lowercase, numbers, symbols]);
 
   useEffect(() => {
     generatePassword();
